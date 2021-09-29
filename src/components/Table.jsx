@@ -3,7 +3,7 @@ import { DataContext } from "../context/DataContextProvider";
 import Tr from "./Tr";
 
 export default function Table() {
-  const { data, dispatch, searchData, handleFiledSearch } =
+  const { data, dispatch, searchData, handleFiledSearch, filedSearch } =
     useContext(DataContext);
 
   return (
@@ -14,9 +14,13 @@ export default function Table() {
             <th className="p-2 border-r cursor-pointer text-sm font-thin text-gray-500">
               <div className="flex items-center justify-center">Index</div>
             </th>
-            <th className="p-2 border-r cursor-pointer text-sm font-thin text-gray-500">
+            <th
+              className={`p-2 border-r cursor-pointer text-sm font-thin text-gray-500 ${
+                filedSearch === "firstName" && "bg-green-400 text-gray-100"
+              } hover:bg-green-200`}
+            >
               <div
-                className="flex items-center justify-center"
+                className="flex items-center justify-center  "
                 id="firstName"
                 onClick={(e) => {
                   handleFiledSearch(e.target.id);
@@ -25,7 +29,11 @@ export default function Table() {
                 First Name
               </div>
             </th>
-            <th className="p-2 border-r cursor-pointer text-sm font-thin text-gray-500">
+            <th
+              className={`p-2 border-r cursor-pointer text-sm font-thin text-gray-500 ${
+                filedSearch === "lastName" && "bg-green-400 text-gray-100"
+              } hover:bg-green-200`}
+            >
               <div
                 className="flex items-center justify-center"
                 id="lastName"
@@ -36,7 +44,11 @@ export default function Table() {
                 last Name
               </div>
             </th>
-            <th className="p-2 border-r cursor-pointer text-sm font-thin text-gray-500">
+            <th
+              className={`p-2 border-r cursor-pointer text-sm font-thin text-gray-500 ${
+                filedSearch === "phoneNumber" && "bg-green-400 text-gray-100"
+              } hover:bg-green-200`}
+            >
               <div
                 className="flex items-center justify-center"
                 id="phoneNumber"

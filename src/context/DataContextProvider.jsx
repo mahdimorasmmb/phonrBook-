@@ -1,38 +1,23 @@
 import { nanoid } from "nanoid";
-import React, { createContext, useContext, useReducer, useState } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useReducer,
+  useState,
+} from "react";
 import DataReducer from "./DataReducer";
 import SelectedDataReducer from "./SelectedDataReducer";
-const initialState = [
-  {
-    id: nanoid(),
-    firstName: "mahdi",
-    lastName: "moras",
-    phoneNumber: "09132656502278",
-  },
-  {
-    id: nanoid(),
-    firstName: "amir",
-    lastName: "rah",
-    phoneNumber: "0977132602278",
-  },
-  {
-    id: nanoid(),
-    firstName: "ali",
-    lastName: "bed",
-    phoneNumber: "0913260442278",
-  },
-  {
-    id: nanoid(),
-    firstName: "mamad",
-    lastName: "teh",
-    phoneNumber: "091324442278",
-  },
-];
 
-export const DataContext = createContext(initialState);
+export const DataContext = createContext(
+  JSON.parse(localStorage.getItem("data")) || []
+);
 
 export default function DataContextProvider({ children }) {
-  const [data, dispatch] = useReducer(DataReducer, initialState);
+  const [data, dispatch] = useReducer(
+    DataReducer,
+    JSON.parse(localStorage.getItem("data")) || []
+  );
   const [selectedData, selectedDis] = useReducer(SelectedDataReducer, {});
   const [searchData, setSearchData] = useState("");
   const [filedSearch, setFiledSearch] = useState("firstName");
@@ -51,6 +36,10 @@ export default function DataContextProvider({ children }) {
     setFiledSearch(text);
   };
 
+  useEffect(() => {
+    window.localStorage.setItem("data", JSON.stringify(data));
+  }, [data]);
+
   return (
     <DataContext.Provider
       value={{
@@ -61,6 +50,7 @@ export default function DataContextProvider({ children }) {
         handleSearch,
         searchData,
         handleFiledSearch,
+        filedSearch,
       }}
     >
       {children}
