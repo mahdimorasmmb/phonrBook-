@@ -1,9 +1,63 @@
 import { Button } from "antd";
-import React from "react";
+import { nanoid } from "nanoid";
+import React, { useContext, useEffect, useState } from "react";
+import { DataContext } from "../context/DataContextProvider";
 
 export default function Form() {
+  const { dispatch, selectedData, selectedDis } = useContext(DataContext);
+  const [lastName, setLastName] = useState();
+  const [firstName, setFirstName] = useState();
+  const [phoneNumber, setPhoneNumber] = useState();
+
+  useEffect(() => {
+    if (selectedData) {
+      setFirstName(selectedData.firstName);
+      setLastName(selectedData.lastName);
+      setPhoneNumber(selectedData.phoneNumber);
+      console.log(selectedData.id);
+    }
+  }, [selectedData]);
+
+  const handleSubmit = () => {
+    if (selectedData) {
+      const newEditItem = {
+        id: selectedData.id,
+        firstName,
+        lastName,
+        phoneNumber,
+      };
+      dispatch({
+        type: "replace",
+        payload: newEditItem,
+      });
+    } else {
+      const newItem = {
+        id: nanoid(),
+        firstName,
+        lastName,
+        phoneNumber,
+      };
+      dispatch({
+        type: "add",
+        payload: newItem,
+      });
+    }
+    selectedDis({
+      type: "reset",
+    });
+    setLastName("");
+    setPhoneNumber("");
+    setFirstName("");
+  };
+
   return (
-    <form className="p-12 w-full  flex justify-between  ">
+    <form
+      className="p-12 w-full  flex justify-between  "
+      onSubmit={(e) => {
+        e.preventDefault();
+        handleSubmit();
+      }}
+    >
       <button className="bg-indigo-500 text-white px-4 py-2 border rounded-md hover:bg-white hover:border-indigo-500 hover:text-black ">
         Add
         <svg
@@ -28,6 +82,10 @@ export default function Form() {
           className="bg-gray-200 appearance-none border-2 border-gray-200 rounded  py-2 px-4 mx-3  text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 hover:border-blue-200"
           type="text"
           placeholder="Enter first name"
+          value={firstName}
+          onChange={(e) => {
+            setFirstName(e.target.value);
+          }}
         />
       </div>
       <div>
@@ -36,6 +94,10 @@ export default function Form() {
           className="bg-gray-200 appearance-none border-2 border-gray-200 rounded  py-2 px-4 mx-3  text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 hover:border-blue-200"
           type="text"
           placeholder="Enter Last name"
+          value={lastName}
+          onChange={(e) => {
+            setLastName(e.target.value);
+          }}
         />
       </div>
       <div>
@@ -44,6 +106,10 @@ export default function Form() {
           className="bg-gray-200 appearance-none border-2 border-gray-200 rounded  py-2 px-4 mx-3  text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-400 hover:border-blue-200 "
           type="number"
           placeholder="Enter Number Phone"
+          value={phoneNumber}
+          onChange={(e) => {
+            setPhoneNumber(e.target.value);
+          }}
         />
       </div>
     </form>
