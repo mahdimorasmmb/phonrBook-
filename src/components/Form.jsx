@@ -4,7 +4,8 @@ import React, { useContext, useEffect, useState } from "react";
 import { DataContext } from "../context/DataContextProvider";
 
 export default function Form() {
-  const { dispatch, selectedData, selectedDis } = useContext(DataContext);
+  const { dispatch, selectedData, selectedDis, setMessage, message } =
+    useContext(DataContext);
   const [lastName, setLastName] = useState();
   const [firstName, setFirstName] = useState();
   const [phoneNumber, setPhoneNumber] = useState();
@@ -55,7 +56,11 @@ export default function Form() {
       className="p-12 w-full  flex justify-between  "
       onSubmit={(e) => {
         e.preventDefault();
-        handleSubmit();
+        if (lastName && firstName && phoneNumber) {
+          handleSubmit();
+        } else {
+          setMessage("completed feild");
+        }
       }}
     >
       <button className="bg-indigo-500 text-white px-4 py-2 border rounded-md hover:bg-white hover:border-indigo-500 hover:text-black ">

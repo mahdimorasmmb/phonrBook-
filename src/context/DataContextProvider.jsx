@@ -21,6 +21,7 @@ export default function DataContextProvider({ children }) {
   const [selectedData, selectedDis] = useReducer(SelectedDataReducer, {});
   const [searchData, setSearchData] = useState("");
   const [filedSearch, setFiledSearch] = useState("firstName");
+  const [message, setMessage] = useState("");
 
   const handleSearch = (text) => {
     const newSearchData = data.map((item) => {
@@ -51,6 +52,8 @@ export default function DataContextProvider({ children }) {
         searchData,
         handleFiledSearch,
         filedSearch,
+        setMessage,
+        message,
       }}
     >
       {children}

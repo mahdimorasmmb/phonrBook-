@@ -1,10 +1,24 @@
-import React, { useContext } from "react";
+import { message } from "antd";
+import React, { useContext, useEffect } from "react";
 import { DataContext } from "../context/DataContextProvider";
 import Tr from "./Tr";
 
 export default function Table() {
-  const { data, dispatch, searchData, handleFiledSearch, filedSearch } =
-    useContext(DataContext);
+  const {
+    message,
+    data,
+    dispatch,
+    searchData,
+    handleFiledSearch,
+    filedSearch,
+    setMessage,
+  } = useContext(DataContext);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setMessage("");
+    }, 5000);
+  }, [message]);
 
   return (
     <div className="table w-full p-2">
@@ -75,6 +89,16 @@ export default function Table() {
               ))}
         </tbody>
       </table>
+      {message && (
+        <div className="absolute" role="alert">
+          <div className="bg-red-500 text-white font-bold rounded-t px-4 py-2">
+            Danger
+          </div>
+          <div className="border border-t-0 border-red-400 rounded-b bg-red-100 px-4 py-3 text-red-700">
+            <p>{message}.</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
